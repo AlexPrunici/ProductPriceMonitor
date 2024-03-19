@@ -11,7 +11,7 @@ class ProductListView(generics.ListAPIView):
 class ProductRetrieveByIdView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'pk'
+    lookup_field = "pk"
 
 
 class ProductCreateView(generics.CreateAPIView):
@@ -19,8 +19,10 @@ class ProductCreateView(generics.CreateAPIView):
     serializer_class = ProductSerializer
 
     def perform_create(self, serializer):
-        name = serializer.validated_data['name']
+        name = serializer.validated_data["name"]
         if Product.objects.filter(name=name).exists():
-            raise serializers.ValidationError("A product with this name already exists.")
+            raise serializers.ValidationError(
+                "A product with this name already exists."
+            )
 
         serializer.save()

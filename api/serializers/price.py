@@ -5,4 +5,4 @@ from api.models import Price
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Price
-        fields = ['id', 'product', 'price', 'date']
+        fields = ["id", "product", "price", "date"]
