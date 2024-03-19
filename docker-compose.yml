@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    container_name: products_db
+    volumes:
+      - products_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "6000:5432"
+
+  web:
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  products_db:
+    external: false
