@@ -5,6 +5,9 @@ from rest_framework import generics, status, serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from api.swagger_schemas import get_average_price_schema
+from drf_yasg.utils import swagger_auto_schema
+
 from api.models import Price, Product
 from api.serializers import PriceSerializer
 
@@ -39,11 +42,12 @@ class PriceCreateView(generics.CreateAPIView):
         serializer.save()
 
 
-@api_view(["POST"])
+@swagger_auto_schema(**get_average_price_schema)
+@api_view(["GET"])
 def calculate_average_price(request):
-    product_id = request.data.get("product_id")
-    start_date_str = request.data.get("start_date")
-    end_date_str = request.data.get("end_date")
+    product_id = request.GET.get("product_id")
+    start_date_str = request.GET.get("start_date")
+    end_date_str = request.GET.get("end_date")
 
     if not all([product_id, start_date_str, end_date_str]):
         return Response(
